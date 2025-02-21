@@ -1,14 +1,14 @@
-class AvailabilityModel {
+class Availability{
   final String startTime;
   final String endTime;
 
-  AvailabilityModel({
+  Availability({
     required this.startTime,
     required this.endTime,
   });
 
-  factory AvailabilityModel.fromJson(Map<String, dynamic> json) {
-    return AvailabilityModel(
+  factory Availability.fromJson(Map<String, dynamic> json) {
+    return Availability(
       startTime: json['StartTime'],
       endTime: json['EndTime'],
     );

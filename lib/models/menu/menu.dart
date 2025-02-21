@@ -1,6 +1,6 @@
 import 'package:food_order_app/models/menu/availability.dart';
 
-class MenuModel {
+class Menu{
   final String id;
   final String menuId;
   final String verticalId;
@@ -8,10 +8,10 @@ class MenuModel {
   final String title;
   final String subTitle;
   final String description;
-  final Map<String, AvailabilityModel> menuAvailability;
+  final Map<String, Availability> menuAvailability;
   final List<String> menuCategoryIds;
 
-  MenuModel(
+  Menu(
       {required this.id,
       required this.menuId,
       required this.verticalId,
@@ -22,8 +22,8 @@ class MenuModel {
       required this.menuAvailability,
       required this.menuCategoryIds});
 
-  factory MenuModel.fromJson(Map<String, dynamic> json) {
-    return MenuModel(
+  factory Menu.fromJson(Map<String, dynamic> json) {
+    return Menu(
       id: json['ID'],
       menuId: json['MenuID'],
       verticalId: json['VerticalID'],
@@ -32,7 +32,7 @@ class MenuModel {
       subTitle: json['SubTitle'],
       description: json['Description'],
       menuAvailability: (json['MenuAvailability'] as Map<String, dynamic>).map(
-        (key, value) => MapEntry(key, AvailabilityModel.fromJson(value)),
+        (key, value) => MapEntry(key, Availability.fromJson(value)),
       ),
       menuCategoryIds: List<String>.from(json['MenuCategoryIDs']),
     );
