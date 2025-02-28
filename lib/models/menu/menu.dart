@@ -29,8 +29,8 @@ class Menu{
       verticalId: json['VerticalID'],
       storeId: json['StoreID'],
       title: json['Title']['en'],
-      subTitle: json['SubTitle'],
-      description: json['Description'],
+      subTitle: json['SubTitle'] ?? '',
+      description: json['Description'] ?? '',
       menuAvailability: (json['MenuAvailability'] as Map<String, dynamic>).map(
         (key, value) => MapEntry(key, Availability.fromJson(value)),
       ),
