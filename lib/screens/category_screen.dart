@@ -1,0 +1,207 @@
+import 'package:flutter/material.dart';
+import 'package:food_order_app/controller/cart_controller.dart';
+import 'package:food_order_app/controller/category_controller.dart';
+import 'package:food_order_app/widgets/add_to_cart_widget.dart';
+import 'package:food_order_app/widgets/item_count_group_widget.dart';
+import 'package:food_order_app/widgets/menu_item_view_widget.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+
+import '../utils/app_colors.dart';
+import '../widgets/custom_app_bar.dart';
+
+class CategoryScreen extends StatefulWidget {
+  String menuTitle;
+  String menuId;
+
+  CategoryScreen({super.key, required this.menuTitle, required this.menuId});
+
+  @override
+  State<CategoryScreen> createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  late final categoryController;
+
+  late double _deviceHeight, _deviceWidth;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    categoryController = Get.put(CategoryController());
+    categoryController.loadCategory(widget.menuId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _deviceHeight = MediaQuery.of(context).size.height;
+    _deviceWidth = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+        appBar: CustomAppBar(
+          title: widget.menuTitle,
+        ),
+        body: Stack(
+            children: [
+          _bodyWidgets(),
+          Positioned(
+              width: _deviceWidth,
+              bottom: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.02),
+                color: AppColors.whiteColor,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: _deviceWidth * 0.04,
+                    ),
+                    ItemCountGroup(),
+                    SizedBox(
+                      width: _deviceWidth * 0.05,
+                    ),
+                    Expanded(child: AddToCartWidget()),
+                    SizedBox(
+                      width: _deviceWidth * 0.04,
+                    ),
+                  ],
+                ),
+              ))
+        ]));
+  }
+
+  Widget _bodyWidgets() {
+    return SizedBox(
+      width: _deviceWidth,
+      child: Obx(() {
+        if (categoryController.isLoading.value) {
+          return const Center(
+              child: CircularProgressIndicator(
+            color: AppColors.greenColor,
+          ));
+        }
+
+        if (categoryController.categoryList.isEmpty) {
+          return Center(
+              child: Text(
+            "No categories available",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.greenColor,
+                fontSize: _deviceHeight * 0.018),
+          ));
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              // Wrap the ListView.builder inside Expanded
+              child: ListView.builder(
+                itemCount: categoryController.categoryList.length,
+                itemBuilder: (context, index) {
+                  var category = categoryController.categoryList[index];
+
+                  return GestureDetector(
+                    onTap: () {
+                      if (categoryController.expandedIndex.value == index) {
+                        categoryController.expandedIndex.value = -1;
+                      } else {
+                        categoryController.expandedIndex.value = index;
+                      }
+                    },
+                    child: Container(
+                      width: _deviceWidth,
+                      margin:
+                          EdgeInsets.symmetric(vertical: _deviceHeight * 0.02),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: _deviceWidth * 0.01,
+                          vertical: _deviceHeight * 0.01),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              const SizedBox(width: 15),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _categoryTitle(
+                                        category.title, category.categoryId),
+                                    const SizedBox(height: 10),
+                                    _tagText(),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          MenuItemView(menuEntity: category.menuEntities)
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget _categoryTitle(String title, String id) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          formatTitle(title),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: _deviceHeight * 0.03,
+          ),
+        ),
+        const SizedBox(
+          height: 1,
+        ),
+        Text(
+          formatTitle("Id : $id"),
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: _deviceHeight * 0.01,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _tagText() {
+    return Container(
+      width: _deviceWidth * 0.13,
+      padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.005),
+      decoration: BoxDecoration(
+          color: AppColors.yellowColor,
+          borderRadius: BorderRadius.circular(10.0)),
+      child: const Text(
+        "CATEGORY",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: AppColors.whiteColor,
+            fontSize: 8.0,
+            fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  String formatTitle(String text) {
+    return text.toLowerCase().split(' ').map((word) {
+      if (word.isNotEmpty) {
+        return word[0].toUpperCase() + word.substring(1);
+      }
+      return word;
+    }).join(' ');
+  }
+
+}

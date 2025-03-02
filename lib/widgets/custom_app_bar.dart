@@ -4,6 +4,9 @@ import '../utils/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
   late double _deviceHeight,_deviceWidth;
+  final String? title;
+
+  CustomAppBar({this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
     return AppBar(
       centerTitle: true,
       backgroundColor: AppColors.greenColor,
-      title: Text("Food Order App",style: TextStyle(
+      title: Text(title ?? "Food Order App",style: TextStyle(
           fontWeight: FontWeight.bold,
           color: AppColors.whiteColor,
           fontSize: _deviceHeight * 0.03

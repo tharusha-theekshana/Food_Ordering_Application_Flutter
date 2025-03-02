@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_order_app/controller/menu_controller.dart';
+import 'package:food_order_app/screens/category_screen.dart';
 import 'package:food_order_app/utils/app_colors.dart';
 import 'package:food_order_app/widgets/availability_days_tags.dart';
 import 'package:food_order_app/widgets/custom_app_bar.dart';
@@ -80,7 +81,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                     },
                     onDoubleTap: () {
-                      print(menu.menuId);
+                      Get.to(CategoryScreen(
+                        menuId: menu.menuId,
+                        menuTitle: menu.title,
+                      ));
                     },
                     child: Container(
                       width: _deviceWidth,
@@ -105,8 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _menuTitle(menu.title),
-                                    const SizedBox(height: 5),
+                                    _menuTitle(menu.title,menu.id),
+                                    const SizedBox(height: 10),
                                     _tagText(),
                                   ],
                                 ),
@@ -167,13 +171,28 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _menuTitle(String title) {
-    return Text(
-      formatTitle(title),
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: _deviceHeight * 0.022,
-      ),
+  Widget _menuTitle(String title,String id) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          formatTitle(title),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: _deviceHeight * 0.022,
+          ),
+        ),
+        const SizedBox(
+          height: 1,
+        ),
+        Text(
+          formatTitle("Id : $id"),
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: _deviceHeight * 0.01,
+          ),
+        ),
+      ],
     );
   }
 

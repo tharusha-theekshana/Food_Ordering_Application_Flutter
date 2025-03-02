@@ -11,7 +11,7 @@ class MenuItem {
 
   final bool isVegetarian;
   final bool isHalal;
-  final List<String> categoryIds;
+  final List<dynamic> categoryIds;
 
   final String productId;
   final String productName;
@@ -42,9 +42,9 @@ class MenuItem {
         title: json["Title"]["en"],
         description: json["Description"]["en"],
         imageUrl: json["ImageURL"],
-        deliveryPrice: json["PriceInfo"]["Price"]["DeliveryPrice"].toString(),
-        pickUpPrice: json["PriceInfo"]["Price"]["PickupPrice"].toString(),
-        tablePrice: json["PriceInfo"]["Price"]["TablePrice"].toString(),
+        deliveryPrice: json["PriceInfo"]["Price"]["DeliveryPrice"].toString() ?? "0",
+        pickUpPrice: json["PriceInfo"]["Price"]["PickupPrice"].toString() ?? "0",
+        tablePrice: json["PriceInfo"]["Price"]["TablePrice"].toString() ?? "0",
         isVegetarian: json["DishInfo"]["Classifications"]["IsVegetarian"],
         isHalal: json["DishInfo"]["Classifications"]["IsHalal"],
         categoryIds: json["CategoryIDs"],
