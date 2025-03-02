@@ -179,7 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
           formatTitle(title),
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: _deviceHeight * 0.022,
+            fontSize: _deviceHeight * 0.025,
+            color: AppColors.blackColor
           ),
         ),
         const SizedBox(
@@ -190,6 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: _deviceHeight * 0.01,
+            color: AppColors.blackColor
           ),
         ),
       ],

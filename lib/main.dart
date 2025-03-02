@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_order_app/screens/home_screen.dart';
+import 'package:food_order_app/screens/splash_screen.dart';
 import 'package:food_order_app/utils/app_colors.dart';
 import 'package:get/get.dart';
 
@@ -34,6 +35,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
         themeMode: ThemeMode.system,
-        home: HomeScreen());
+        home: SplashScreen());
   }
 }
