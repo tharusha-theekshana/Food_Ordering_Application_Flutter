@@ -40,16 +40,10 @@ class _MenuItemViewState extends State<MenuItemView> {
             future:
                 menuItemController.loadMenuItems(widget.menuEntity[index].id),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(color: AppColors.greenColor),
-                );
-              }
-
               if (snapshot.hasError ||
                   !snapshot.hasData ||
                   snapshot.data!.isEmpty) {
-                return const Center(child: Text('No menu items available'));
+                return const Center();
               }
 
               List<MenuItem> menuItems = snapshot.data!;
@@ -89,7 +83,7 @@ class _MenuItemViewState extends State<MenuItemView> {
                                       style: TextStyle(
                                           color: AppColors.greenColor,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: _deviceHeight * 0.017),
+                                          fontSize: _deviceHeight * 0.019),
                                     ),
                                     SizedBox(
                                       height: _deviceHeight * 0.005,
@@ -97,8 +91,9 @@ class _MenuItemViewState extends State<MenuItemView> {
                                     Text(
                                       menuItems[itemIndex].menuItemId,
                                       style: TextStyle(
-                                          fontSize: _deviceHeight * 0.01,
-                                          color: AppColors.blackColor),
+                                          fontSize: _deviceHeight * 0.011,
+                                          color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w400),
                                     ),
                                     SizedBox(
                                       height: _deviceHeight * 0.005,
@@ -173,8 +168,8 @@ class _MenuItemViewState extends State<MenuItemView> {
         ),
         Text(
           formatDescription(description),
-          style: const TextStyle(
-              fontWeight: FontWeight.w500, color: AppColors.blackColor),
+          style: TextStyle(
+              fontWeight: FontWeight.w700, color: AppColors.blackColor,fontSize: _deviceHeight * 0.018),
         ),
         SizedBox(
           height: _deviceHeight * 0.02,
@@ -183,9 +178,15 @@ class _MenuItemViewState extends State<MenuItemView> {
             deliveryPrice: deliverPrice,
             pickUpPrice: pickUpPrice,
             tablePrice: tablePrice),
+        SizedBox(
+          height: _deviceHeight * 0.02,
+        ),
         ModifierItemWidget(
           modifierGroupIdList: modifierList,
-        )
+        ),
+        SizedBox(
+          height: _deviceHeight * 0.02,
+        ),
       ],
     );
   }

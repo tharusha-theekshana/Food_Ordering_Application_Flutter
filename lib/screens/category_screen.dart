@@ -42,7 +42,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     _deviceWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        appBar: CustomAppBarWidget(title: menuTitle),
+        appBar: CustomAppBarWidget(title: "Categories"),
         body: Stack(children: [_bodyWidgets(), _bottomWidgets()]));
   }
 

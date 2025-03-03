@@ -12,6 +12,7 @@ class MenuItemController extends GetxController {
 
   // For menu item selection
   var selectedIndex = (-1).obs;
+  var selectedPriceIndex = (-1).obs;
 
   @override
   void onInit() {
@@ -46,7 +47,6 @@ class MenuItemController extends GetxController {
   }
 
   Future<List<MenuItem>> loadMenuItemsByModifiers(String modifierId) async {
-    print("Id "+ modifierId);
     try {
       isLoading(true);
 
@@ -61,7 +61,6 @@ class MenuItemController extends GetxController {
           .map((json) => MenuItem.fromJson(json))
           .toList();
 
-      print(filteredMenuItem);
       return filteredMenuItem;
 
     } catch (e) {
