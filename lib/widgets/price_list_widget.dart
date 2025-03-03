@@ -21,7 +21,7 @@ class PriceListWidget extends StatelessWidget {
 
     return SizedBox(
       width: _deviceWidth * 0.9,
-      height: _deviceHeight * 0.1,
+      height: _deviceHeight * 0.07,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_order_app/controller/menu_controller.dart';
 import 'package:food_order_app/screens/category_screen.dart';
 import 'package:food_order_app/utils/app_colors.dart';
-import 'package:food_order_app/widgets/availability_days_tags.dart';
-import 'package:food_order_app/widgets/custom_app_bar.dart';
+import 'package:food_order_app/widgets/availability_days_tags_widget.dart';
+import 'package:food_order_app/widgets/custom_app_bar_widget.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _deviceHeight = MediaQuery.of(context).size.height;
     _deviceWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(appBar: CustomAppBar(), body: _bodyWidgets());
+    return Scaffold(appBar: CustomAppBarWidget(), body: _bodyWidgets());
   }
 
   Widget _bodyWidgets() {
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Obx(() {
                             return menuController.expandedIndex.value == index
-                                ? AvailabilityDaysTags(menuAvailability: menu.menuAvailability)
+                                ? AvailabilityDaysTagsWidget(menuAvailability: menu.menuAvailability)
                                 : SizedBox.shrink();
                           }),
                         ],

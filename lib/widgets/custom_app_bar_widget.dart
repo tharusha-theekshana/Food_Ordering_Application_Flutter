@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../utils/app_colors.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget{
+class CustomAppBarWidget extends StatelessWidget implements PreferredSizeWidget{
   late double _deviceHeight,_deviceWidth;
   final String? title;
 
-  CustomAppBar({this.title});
+  CustomAppBarWidget({this.title});
 
   @override
   Widget build(BuildContext context) {

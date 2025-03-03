@@ -3,11 +3,11 @@ import 'package:food_order_app/models/menu/availability.dart';
 import 'package:food_order_app/utils/app_colors.dart';
 import 'package:intl/intl.dart';
 
-class AvailabilityDaysTags extends StatelessWidget {
+class AvailabilityDaysTagsWidget extends StatelessWidget {
   final Map<String, Availability> menuAvailability;
   late double _deviceHeight, _deviceWidth;
 
-  AvailabilityDaysTags({required this.menuAvailability});
+  AvailabilityDaysTagsWidget({required this.menuAvailability});
 
   @override
   Widget build(BuildContext context) {

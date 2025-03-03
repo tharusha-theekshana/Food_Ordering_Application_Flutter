@@ -3,10 +3,11 @@ import 'package:food_order_app/controller/category_controller.dart';
 import 'package:food_order_app/widgets/add_to_cart_widget.dart';
 import 'package:food_order_app/widgets/item_count_group_widget.dart';
 import 'package:food_order_app/widgets/menu_item_view_widget.dart';
+import 'package:food_order_app/widgets/tag_text_widget.dart';
 import 'package:get/get.dart';
 
 import '../utils/app_colors.dart';
-import '../widgets/custom_app_bar.dart';
+import '../widgets/custom_app_bar_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
   String menuTitle;
@@ -23,11 +24,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   late double _deviceHeight, _deviceWidth;
 
+  late final String menuTitle;
+  late final String menuId;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    categoryController.loadCategory(widget.menuId);
+    menuTitle = widget.menuTitle;
+    menuId = widget.menuId;
+    categoryController.loadCategory(menuId);
   }
 
   @override
@@ -36,9 +42,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     _deviceWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        appBar: CustomAppBar(
-          title: widget.menuTitle,
-        ),
+        appBar: CustomAppBarWidget(title: menuTitle),
         body: Stack(children: [_bodyWidgets(), _bottomWidgets()]));
   }
 
@@ -46,7 +50,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return SizedBox(
       width: _deviceWidth,
       child: Obx(() {
-
         // Categories in loading state
         if (categoryController.isLoading.value) {
           return const Center(
@@ -72,49 +75,32 @@ class _CategoryScreenState extends State<CategoryScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-
               // Item list
               child: ListView.builder(
                 itemCount: categoryController.categoryList.length,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   var category = categoryController.categoryList[index];
 
-                  return GestureDetector(
-                    onTap: () {
-                      if (categoryController.expandedIndex.value == index) {
-                        categoryController.expandedIndex.value = -1;
-                      } else {
-                        categoryController.expandedIndex.value = index;
-                      }
-                    },
-                    child: Container(
-                      width: _deviceWidth,
-                      margin:
-                          EdgeInsets.symmetric(vertical: _deviceHeight * 0.02),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: _deviceWidth * 0.01,
-                          vertical: _deviceHeight * 0.01),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              const SizedBox(width: 15),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _categoryTitle(
-                                        category.title, category.categoryId),
-                                    const SizedBox(height: 10),
-                                    _tagText(),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          MenuItemView(menuEntity: category.menuEntities)
-                        ],
-                      ),
+                  return Container(
+                    margin:
+                        EdgeInsets.symmetric(vertical: _deviceHeight * 0.02),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: _deviceWidth * 0.04,
+                        vertical: _deviceHeight * 0.01),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _categoryTitle(category.title, category.categoryId),
+                        SizedBox(height: _deviceHeight * 0.01),
+                        TagTextWidget(
+                            tagText: "CATEGORY",
+                            backgroundColor: AppColors.yellowColor,
+                            textColor: AppColors.whiteColor,
+                            deviceHeight: _deviceHeight,
+                            deviceWidth: _deviceWidth),
+                        MenuItemView(menuEntity: category.menuEntities)
+                      ],
                     ),
                   );
                 },
@@ -175,24 +161,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _tagText() {
-    return Container(
-      width: _deviceWidth * 0.13,
-      padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.005),
-      decoration: BoxDecoration(
-          color: AppColors.yellowColor,
-          borderRadius: BorderRadius.circular(10.0)),
-      child: const Text(
-        "CATEGORY",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            color: AppColors.whiteColor,
-            fontSize: 8.0,
-            fontWeight: FontWeight.bold),
-      ),
     );
   }
 

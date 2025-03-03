@@ -3,7 +3,9 @@ import 'package:food_order_app/controller/cart_controller.dart';
 import 'package:food_order_app/controller/menu_item_controller.dart';
 import 'package:food_order_app/models/category/menu_entity.dart';
 import 'package:food_order_app/models/menu_items/menu_item.dart';
+import 'package:food_order_app/widgets/modifier_item_widget.dart';
 import 'package:food_order_app/widgets/price_list_widget.dart';
+import 'package:food_order_app/widgets/tag_text_widget.dart';
 import 'package:get/get.dart';
 
 import '../utils/app_colors.dart';
@@ -28,14 +30,14 @@ class _MenuItemViewState extends State<MenuItemView> {
     _deviceWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      padding:
-          EdgeInsets.symmetric(vertical: 10, horizontal: _deviceWidth * 0.02),
+      height: _deviceHeight * 0.8,
+      padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.01),
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: widget.menuEntity.length,
         itemBuilder: (context, index) {
-          return StreamBuilder<List<MenuItem>>(
-            stream:
+          return FutureBuilder<List<MenuItem>>(
+            future:
                 menuItemController.loadMenuItems(widget.menuEntity[index].id),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -101,7 +103,12 @@ class _MenuItemViewState extends State<MenuItemView> {
                                     SizedBox(
                                       height: _deviceHeight * 0.005,
                                     ),
-                                    _tagText(),
+                                    TagTextWidget(
+                                        tagText: "MENU ITEM",
+                                        backgroundColor: AppColors.blueColor,
+                                        textColor: AppColors.whiteColor,
+                                        deviceHeight: _deviceHeight,
+                                        deviceWidth: _deviceWidth)
                                   ],
                                 ),
                               ),
@@ -127,7 +134,8 @@ class _MenuItemViewState extends State<MenuItemView> {
                                             menuItems[itemIndex].pickUpPrice);
                                       }
                                     },
-                                    activeColor: AppColors.greenColor,
+                                    fillColor: MaterialStateProperty.all(
+                                        AppColors.greenColor),
                                   ))
                             ],
                           ),
@@ -138,7 +146,8 @@ class _MenuItemViewState extends State<MenuItemView> {
                                     menuItems[itemIndex].description,
                                     menuItems[itemIndex].deliveryPrice,
                                     menuItems[itemIndex].pickUpPrice,
-                                    menuItems[itemIndex].tablePrice)
+                                    menuItems[itemIndex].tablePrice,
+                                    menuItems[itemIndex].modifierGroupRulesIds)
                                 : SizedBox.shrink();
                           }),
                         ],
@@ -155,7 +164,7 @@ class _MenuItemViewState extends State<MenuItemView> {
   }
 
   Widget _expandedArea(String description, String deliverPrice,
-      String pickUpPrice, String tablePrice) {
+      String pickUpPrice, String tablePrice, List<String> modifierList) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -173,29 +182,11 @@ class _MenuItemViewState extends State<MenuItemView> {
         PriceListWidget(
             deliveryPrice: deliverPrice,
             pickUpPrice: pickUpPrice,
-            tablePrice: tablePrice)
+            tablePrice: tablePrice),
+        ModifierItemWidget(
+          modifierGroupIdList: modifierList,
+        )
       ],
-    );
-  }
-
-  // MENUITEM tag
-  Widget _tagText() {
-    return Container(
-      width: _deviceWidth * 0.13,
-      padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.005),
-      decoration: BoxDecoration(
-        color: AppColors.blueColor,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: const Text(
-        "MENU ITEM",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: AppColors.whiteColor,
-          fontSize: 8.0,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
     );
   }
 

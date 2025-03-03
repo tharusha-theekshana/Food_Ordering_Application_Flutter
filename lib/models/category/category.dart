@@ -26,8 +26,8 @@ class Category {
       storeId: json["StoreID"],
       title: json["Title"]["en"],
       subTitle: json["SubTitle"]["en"] ?? "",
-      menuEntities: (json['MenuEntities'] as List<dynamic>)
-          .map((e) => MenuEntity.fromJson(e))
+      menuEntities: (json['MenuEntities'] as List)
+          .map((item) => MenuEntity.fromJson(item))
           .toList(),
     );
   }

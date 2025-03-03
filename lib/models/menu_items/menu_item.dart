@@ -1,3 +1,5 @@
+import 'package:food_order_app/models/modifier/modifier_option.dart';
+
 class MenuItem {
   final String id;
   final String menuItemId;
@@ -18,7 +20,7 @@ class MenuItem {
   final String unitChartId;
   final String unitChartName;
 
-  final List<dynamic> modifierGroupRoles;
+  final List<String> modifierGroupRulesIds;
   final List<dynamic> overrides;
 
   MenuItem(
@@ -38,7 +40,7 @@ class MenuItem {
       required this.productName,
       required this.unitChartId,
       required this.unitChartName,
-      required this.modifierGroupRoles,
+      required this.modifierGroupRulesIds,
       required this.overrides});
 
   factory MenuItem.fromJson(Map<String, dynamic> json) {
@@ -60,7 +62,9 @@ class MenuItem {
       productName: json["MetaData"]["ProductName"],
       unitChartId: json["MetaData"]["UnitChartID"],
       unitChartName: json["MetaData"]["UnitChartName"],
-      modifierGroupRoles: json["ModifierGroupRules"]["IDs"] ?? [],
+      modifierGroupRulesIds: (json["ModifierGroupRules"]["IDs"] as List)
+          .map((e) => e.toString()) // Convert each element to a String
+          .toList(),
       overrides: json["ModifierGroupRules"]["Overrides"] ?? [],
     );
   }

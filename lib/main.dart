@@ -35,6 +35,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
         themeMode: ThemeMode.system,
-        home: SplashScreen());
+        home: HomeScreen());
   }
 }

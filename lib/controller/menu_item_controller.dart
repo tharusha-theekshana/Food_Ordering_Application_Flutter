@@ -5,7 +5,6 @@ import 'package:food_order_app/models/menu_items/menu_item.dart';
 import 'package:get/get.dart';
 
 class MenuItemController extends GetxController {
-  var menuItemList = <MenuItem>[].obs;
   var isLoading = true.obs;
 
   // For expanded area
@@ -20,7 +19,7 @@ class MenuItemController extends GetxController {
     super.onInit();
   }
 
-  Stream<List<MenuItem>> loadMenuItems(String entityId) async* {
+  Future<List<MenuItem>> loadMenuItems(String entityId) async {
     try {
       isLoading(true);
 
@@ -35,11 +34,40 @@ class MenuItemController extends GetxController {
           .map((json) => MenuItem.fromJson(json))
           .toList();
 
-      yield filteredMenuItem; // Emit the list of menu items
+      return filteredMenuItem; // Update the menuItemList
 
     } catch (e) {
       print('Error loading menu: $e');
-      yield []; // Emit an empty list on error
+      return [];
+
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  Future<List<MenuItem>> loadMenuItemsByModifiers(String modifierId) async {
+    print("Id "+ modifierId);
+    try {
+      isLoading(true);
+
+      // Load JSON file asynchronously
+      final String response = await rootBundle.loadString('assets/json/app_json.json');
+      final data = json.decode(response);
+
+      List<dynamic> menuItemJsonList = data['Result']['Items'];
+
+      List<MenuItem> filteredMenuItem = menuItemJsonList
+          .where((json) => json['MenuItemID'].toString() == modifierId.toString())
+          .map((json) => MenuItem.fromJson(json))
+          .toList();
+
+      print(filteredMenuItem);
+      return filteredMenuItem;
+
+    } catch (e) {
+      print('Error loading menu: $e');
+      return [];
+
     } finally {
       isLoading(false);
     }
