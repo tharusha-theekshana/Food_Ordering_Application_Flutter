@@ -11,6 +11,9 @@ class MenuItemController extends GetxController {
   // For expanded area
   var expandedIndex = (-1).obs;
 
+  // For menu item selection
+  var selectedIndex = (-1).obs;
+
   @override
   void onInit() {
     // TODO: implement onInit

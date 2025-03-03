@@ -35,7 +35,7 @@ class AddToCartWidget extends StatelessWidget {
           const SizedBox(
             width: 5,
           ),
-          Obx(() => Text(cartController.amount.toString(),style: TextStyle(
+          Obx(() => Text(cartController.totalAmount.toString(),style: TextStyle(
               fontSize: _deviceHeight * 0.018,
               color: AppColors.whiteColor,
               fontWeight: FontWeight.w700

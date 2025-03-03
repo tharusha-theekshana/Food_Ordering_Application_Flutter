@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_order_app/controller/cart_controller.dart';
 import 'package:food_order_app/controller/category_controller.dart';
 import 'package:food_order_app/widgets/add_to_cart_widget.dart';
 import 'package:food_order_app/widgets/item_count_group_widget.dart';
 import 'package:food_order_app/widgets/menu_item_view_widget.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 import '../utils/app_colors.dart';
 import '../widgets/custom_app_bar.dart';
@@ -22,7 +19,7 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  late final categoryController;
+  late final categoryController = Get.put(CategoryController());
 
   late double _deviceHeight, _deviceWidth;
 
@@ -30,7 +27,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    categoryController = Get.put(CategoryController());
     categoryController.loadCategory(widget.menuId);
   }
 
@@ -43,40 +39,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
         appBar: CustomAppBar(
           title: widget.menuTitle,
         ),
-        body: Stack(
-            children: [
-          _bodyWidgets(),
-          Positioned(
-              width: _deviceWidth,
-              bottom: 0,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.02),
-                color: AppColors.whiteColor,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: _deviceWidth * 0.04,
-                    ),
-                    ItemCountGroup(),
-                    SizedBox(
-                      width: _deviceWidth * 0.05,
-                    ),
-                    Expanded(child: AddToCartWidget()),
-                    SizedBox(
-                      width: _deviceWidth * 0.04,
-                    ),
-                  ],
-                ),
-              ))
-        ]));
+        body: Stack(children: [_bodyWidgets(), _bottomWidgets()]));
   }
 
   Widget _bodyWidgets() {
     return SizedBox(
       width: _deviceWidth,
       child: Obx(() {
+
+        // Categories in loading state
         if (categoryController.isLoading.value) {
           return const Center(
               child: CircularProgressIndicator(
@@ -84,6 +55,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ));
         }
 
+        // Categories are empty
         if (categoryController.categoryList.isEmpty) {
           return Center(
               child: Text(
@@ -95,11 +67,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ));
         }
 
+        // Categories are loaded success
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              // Wrap the ListView.builder inside Expanded
+
+              // Item list
               child: ListView.builder(
                 itemCount: categoryController.categoryList.length,
                 itemBuilder: (context, index) {
@@ -150,6 +124,33 @@ class _CategoryScreenState extends State<CategoryScreen> {
         );
       }),
     );
+  }
+
+  Widget _bottomWidgets() {
+    return Positioned(
+        width: _deviceWidth,
+        bottom: 0,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.02),
+          color: AppColors.whiteColor,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: _deviceWidth * 0.04,
+              ),
+              ItemCountGroup(),
+              SizedBox(
+                width: _deviceWidth * 0.05,
+              ),
+              Expanded(child: AddToCartWidget()),
+              SizedBox(
+                width: _deviceWidth * 0.04,
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget _categoryTitle(String title, String id) {
@@ -203,5 +204,4 @@ class _CategoryScreenState extends State<CategoryScreen> {
       return word;
     }).join(' ');
   }
-
 }

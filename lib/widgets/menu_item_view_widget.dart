@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_order_app/controller/cart_controller.dart';
 import 'package:food_order_app/controller/menu_item_controller.dart';
 import 'package:food_order_app/models/category/menu_entity.dart';
 import 'package:food_order_app/models/menu_items/menu_item.dart';
@@ -18,13 +19,8 @@ class MenuItemView extends StatefulWidget {
 
 class _MenuItemViewState extends State<MenuItemView> {
   late double _deviceHeight, _deviceWidth;
-  late final MenuItemController menuItemController;
-
-  @override
-  void initState() {
-    super.initState();
-    menuItemController = Get.put(MenuItemController());
-  }
+  final menuItemController = Get.put(MenuItemController());
+  final cartController = Get.put(CartController());
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +85,7 @@ class _MenuItemViewState extends State<MenuItemView> {
                                     Text(
                                       menuItems[itemIndex].title,
                                       style: TextStyle(
-                                        color: AppColors.greenColor,
+                                          color: AppColors.greenColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: _deviceHeight * 0.017),
                                     ),
@@ -100,8 +96,7 @@ class _MenuItemViewState extends State<MenuItemView> {
                                       menuItems[itemIndex].menuItemId,
                                       style: TextStyle(
                                           fontSize: _deviceHeight * 0.01,
-                                          color:AppColors.blackColor
-                                      ),
+                                          color: AppColors.blackColor),
                                     ),
                                     SizedBox(
                                       height: _deviceHeight * 0.005,
@@ -120,6 +115,20 @@ class _MenuItemViewState extends State<MenuItemView> {
                                       color: AppColors.greenColor,
                                     ),
                                   )),
+                              Obx(() => Radio<int>(
+                                    value: index,
+                                    groupValue:
+                                        menuItemController.selectedIndex.value,
+                                    onChanged: (int? value) {
+                                      if (value != null) {
+                                        menuItemController.selectedIndex.value =
+                                            value;
+                                        cartController.setAmount(
+                                            menuItems[itemIndex].pickUpPrice);
+                                      }
+                                    },
+                                    activeColor: AppColors.greenColor,
+                                  ))
                             ],
                           ),
                           Obx(() {
@@ -155,7 +164,8 @@ class _MenuItemViewState extends State<MenuItemView> {
         ),
         Text(
           formatDescription(description),
-          style: const TextStyle(fontWeight: FontWeight.w500,color:AppColors.blackColor),
+          style: const TextStyle(
+              fontWeight: FontWeight.w500, color: AppColors.blackColor),
         ),
         SizedBox(
           height: _deviceHeight * 0.02,

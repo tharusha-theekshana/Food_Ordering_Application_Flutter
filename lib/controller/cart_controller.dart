@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 class CartController extends GetxController {
   var itemCount = 0.obs;
-  var amount = 0.00.obs;
+  RxDouble totalAmount = 0.0.obs;
 
   void incrementItemCount() {
     itemCount.value++;
@@ -13,4 +13,10 @@ class CartController extends GetxController {
       itemCount.value--;
     }
   }
+
+  void setAmount(String price) {
+    totalAmount.value = double.parse(price);
+  }
+
+
 }
