@@ -20,6 +20,7 @@ class MenuItemController extends GetxController {
     super.onInit();
   }
 
+  // Return menu items according to menu entity id
   Future<List<MenuItem>> loadMenuItems(String entityId) async {
     try {
       isLoading(true);
@@ -35,7 +36,7 @@ class MenuItemController extends GetxController {
           .map((json) => MenuItem.fromJson(json))
           .toList();
 
-      return filteredMenuItem; // Update the menuItemList
+      return filteredMenuItem;
 
     } catch (e) {
       print('Error loading menu: $e');
@@ -46,11 +47,12 @@ class MenuItemController extends GetxController {
     }
   }
 
+  // Return menu items according to modifier id
   Future<List<MenuItem>> loadMenuItemsByModifiers(String modifierId) async {
     try {
       isLoading(true);
 
-      // Load JSON file asynchronously
+      // Load JSON file
       final String response = await rootBundle.loadString('assets/json/app_json.json');
       final data = json.decode(response);
 

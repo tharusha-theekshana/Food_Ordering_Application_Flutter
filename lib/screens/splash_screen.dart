@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_order_app/screens/home_screen.dart';
+import 'package:food_order_app/screens/menu_screen.dart';
 import '../utils/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,10 +14,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
+
+      // Check context is mounted
       if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()), // Replace with your next screen
+          MaterialPageRoute(builder: (context) => const MenuScreen()), // Replace with your next screen
         );
       }
     });

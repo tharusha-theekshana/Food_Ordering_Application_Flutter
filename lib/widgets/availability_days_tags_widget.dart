@@ -23,12 +23,15 @@ class AvailabilityDaysTagsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(
             "Availability : ",
-            style: TextStyle(fontWeight: FontWeight.w500,fontSize: _deviceHeight * 0.018,color: AppColors.secondGrayColor),
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: _deviceHeight * 0.017,
+                color: AppColors.secondGrayColor),
           ),
           const SizedBox(
             height: 10,
@@ -49,21 +52,38 @@ class AvailabilityDaysTagsWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(flex: 1, child: Text("$day : ",style: TextStyle(
-                          color: isToday ? AppColors.greenColor : AppColors.secondGrayColor,
-                          fontWeight: isToday ? FontWeight.bold : FontWeight.w500
-                        ),)),
                         Expanded(
                             flex: 1,
-                            child: Text("${availability.startTime} A.M - ",style: TextStyle(
-                                color: isToday ? AppColors.greenColor : AppColors.secondGrayColor,
-                                fontWeight: isToday ? FontWeight.bold : FontWeight.w500
-                            ))),
+                            child: Text(
+                              "$day : ",
+                              style: TextStyle(
+                                  color: isToday
+                                      ? AppColors.greenColor
+                                      : AppColors.secondGrayColor,
+                                  fontWeight: isToday
+                                      ? FontWeight.bold
+                                      : FontWeight.w500),
+                            )),
                         Expanded(
-                            flex: 1, child: Text("${availability.endTime} P.M",style: TextStyle(
-                            color: isToday ? AppColors.greenColor : AppColors.secondGrayColor,
-                            fontWeight: isToday ? FontWeight.bold : FontWeight.w500
-                        )))
+                            flex: 1,
+                            child: Text("${availability.startTime} A.M - ",
+                                style: TextStyle(
+                                    color: isToday
+                                        ? AppColors.greenColor
+                                        : AppColors.secondGrayColor,
+                                    fontWeight: isToday
+                                        ? FontWeight.bold
+                                        : FontWeight.w500))),
+                        Expanded(
+                            flex: 1,
+                            child: Text("${availability.endTime} P.M",
+                                style: TextStyle(
+                                    color: isToday
+                                        ? AppColors.greenColor
+                                        : AppColors.secondGrayColor,
+                                    fontWeight: isToday
+                                        ? FontWeight.bold
+                                        : FontWeight.w500)))
                       ],
                     ));
               }).toList(),

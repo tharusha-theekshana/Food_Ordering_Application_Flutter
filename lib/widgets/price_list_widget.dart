@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_order_app/controller/cart_controller.dart';
 import 'package:food_order_app/controller/menu_item_controller.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../utils/app_colors.dart';
 

@@ -1,5 +1,3 @@
-import 'package:food_order_app/models/modifier/modifier_option.dart';
-
 class MenuItem {
   final String id;
   final String menuItemId;

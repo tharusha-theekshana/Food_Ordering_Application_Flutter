@@ -4,7 +4,6 @@ import 'package:food_order_app/controller/modifiers_controller.dart';
 import 'package:food_order_app/models/modifier/modifier_group.dart';
 import 'package:get/get.dart';
 
-import '../models/menu_items/menu_item.dart';
 import '../utils/app_colors.dart';
 
 class ModifierItemWidget extends StatefulWidget {

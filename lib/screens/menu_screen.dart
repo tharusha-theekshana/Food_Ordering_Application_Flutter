@@ -4,16 +4,17 @@ import 'package:food_order_app/screens/category_screen.dart';
 import 'package:food_order_app/utils/app_colors.dart';
 import 'package:food_order_app/widgets/availability_days_tags_widget.dart';
 import 'package:food_order_app/widgets/custom_app_bar_widget.dart';
+import 'package:food_order_app/widgets/tag_text_widget.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class MenuScreen extends StatefulWidget {
+  const MenuScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<MenuScreen> createState() => _MenuScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MenuScreenState extends State<MenuScreen> {
   late final menuController;
   late double _deviceHeight, _deviceWidth;
 
@@ -26,8 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _deviceHeight = MediaQuery.of(context).size.height;
-    _deviceWidth = MediaQuery.of(context).size.width;
+    _deviceHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    _deviceWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return Scaffold(appBar: CustomAppBarWidget(), body: _bodyWidgets());
   }
@@ -42,19 +49,19 @@ class _HomeScreenState extends State<HomeScreen> {
         if (menuController.isLoading.value) {
           return const Center(
               child: CircularProgressIndicator(
-            color: AppColors.greenColor,
-          ));
+                color: AppColors.greenColor,
+              ));
         }
 
         if (menuController.menuList.isEmpty) {
           return Center(
               child: Text(
-            "No menus available",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: AppColors.greenColor,
-                fontSize: _deviceHeight * 0.018),
-          ));
+                "No menus available",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.greenColor,
+                    fontSize: _deviceHeight * 0.018),
+              ));
         }
 
         return Column(
@@ -62,10 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
                 padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.01),
-                child: Text("${menuController.menuList.length} Menus Available",style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.greenColor
-                ),)),
+                child: Text("${menuController.menuList.length} Menus Available",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.greenColor
+                  ),)),
             Expanded( // Wrap the ListView.builder inside Expanded
               child: ListView.builder(
                 itemCount: menuController.menuList.length,
@@ -75,9 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   return GestureDetector(
                     onTap: () {
                       if (menuController.expandedIndex.value == index) {
-                        menuController.expandedIndex.value = -1; 
+                        menuController.expandedIndex.value = -1;
                       } else {
-                        menuController.expandedIndex.value = index; 
+                        menuController.expandedIndex.value = index;
                       }
                     },
                     onDoubleTap: () {
@@ -88,7 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: Container(
                       width: _deviceWidth,
-                      margin: EdgeInsets.symmetric(vertical: _deviceHeight * 0.005),
+                      margin: EdgeInsets.symmetric(vertical: _deviceHeight *
+                          0.005),
                       padding: EdgeInsets.symmetric(
                           horizontal: _deviceWidth * 0.02,
                           vertical: _deviceHeight * 0.01),
@@ -109,23 +118,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _menuTitle(menu.title,menu.id),
+                                    _menuTitle(menu.title, menu.id),
                                     const SizedBox(height: 10),
-                                    _tagText(),
+                                    TagTextWidget(tagText: "MENU",
+                                        backgroundColor: AppColors.greenColor,
+                                        textColor: AppColors.whiteColor,
+                                        deviceHeight: _deviceHeight,
+                                        deviceWidth: _deviceWidth)
                                   ],
                                 ),
                               ),
-                              Obx(() => Icon(
-                                menuController.expandedIndex.value == index
-                                    ? Icons.keyboard_arrow_up
-                                    : Icons.keyboard_arrow_down,
-                                color: AppColors.greenColor,
-                              )),
+                              Obx(() =>
+                                  Icon(
+                                    menuController.expandedIndex.value == index
+                                        ? Icons.keyboard_arrow_up
+                                        : Icons.keyboard_arrow_down,
+                                    color: AppColors.greenColor,
+                                  )),
                             ],
                           ),
                           Obx(() {
                             return menuController.expandedIndex.value == index
-                                ? AvailabilityDaysTagsWidget(menuAvailability: menu.menuAvailability)
+                                ? AvailabilityDaysTagsWidget(
+                                menuAvailability: menu.menuAvailability)
                                 : SizedBox.shrink();
                           }),
                         ],
@@ -141,6 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Menu image
   Widget _menuImage() {
     return Container(
       width: _deviceWidth * 0.2,
@@ -153,52 +169,37 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _tagText() {
-    return Container(
-      width: _deviceWidth * 0.12,
-      padding: EdgeInsets.symmetric(vertical: _deviceHeight * 0.005),
-      decoration: BoxDecoration(
-          color: AppColors.greenColor,
-          borderRadius: BorderRadius.circular(10.0)),
-      child: const Text(
-        "MENU",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-            color: AppColors.whiteColor,
-            fontSize: 8.0,
-            fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _menuTitle(String title,String id) {
+  // Menu title
+  Widget _menuTitle(String title, String id) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          formatTitle(title),
+          _formatTitle(title),
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: _deviceHeight * 0.025,
-            color: AppColors.blackColor
+              fontWeight: FontWeight.bold,
+              fontSize: _deviceHeight * 0.025,
+              color: AppColors.blackColor
           ),
         ),
         const SizedBox(
           height: 1,
         ),
         Text(
-          formatTitle("Id : $id"),
+          _formatTitle("Id : $id"),
           style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: _deviceHeight * 0.01,
-            color: AppColors.blackColor
+              fontWeight: FontWeight.w500,
+              fontSize: _deviceHeight * 0.01,
+              color: AppColors.blackColor
           ),
         ),
       ],
     );
   }
 
-  String formatTitle(String text) {
+
+  // Format title
+  String _formatTitle(String text) {
     return text.toLowerCase().split(' ').map((word) {
       if (word.isNotEmpty) {
         return word[0].toUpperCase() + word.substring(1);

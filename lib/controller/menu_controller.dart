@@ -19,17 +19,19 @@ class MenuListController extends GetxController {
     super.onInit();
   }
 
+  // Load all menus
   Future<void> loadMenu() async {
     try {
       isLoading(true);
 
-      // Load JSON file
+      // Load json file
       final String response =
           await rootBundle.loadString('assets/json/app_json.json');
       final data = await json.decode(response);
 
       List<dynamic> menuJsonList = data['Result']['Menu'];
 
+      // Set data
       menuList.value =
           menuJsonList.map((menuJson) => Menu.fromJson(menuJson)).toList();
     } catch (e) {

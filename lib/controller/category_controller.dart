@@ -17,6 +17,7 @@ class CategoryController extends GetxController {
     super.onInit();
   }
 
+  // Load json
   Future<List<dynamic>> loadJsonData() async {
     try {
       final String response = await rootBundle.loadString('assets/json/app_json.json');
@@ -29,6 +30,7 @@ class CategoryController extends GetxController {
     }
   }
 
+  // Load categories according to menuId
   Future<void> loadCategory(String menuId) async {
     try {
       isLoading(true);

@@ -11,9 +11,11 @@ class ModifiersController extends GetxController {
 
   @override
   void onInit() {
+    // TODO: implement onInit
     super.onInit();
   }
 
+  // Load modifiers
   Future<List<Modifier>> loadModifiers(String modifierId) async {
     try {
       isLoading(true);
